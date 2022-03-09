@@ -24,6 +24,10 @@ public class Player {
         return cards.calculateTotalScore() == 21;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public List<Card> getCards() {
         return cards.getValue();
     }
