@@ -24,4 +24,12 @@ public class Deck {
             throw new IllegalArgumentException("카드 뭉치의 갯수가 부족합니다.");
         }
     }
+
+    public Card draw() {
+        if (cards.isEmpty()) {
+            throw new IllegalArgumentException("보유한 카드를 모두 소모하였습니다.");
+        }
+
+        return cards.poll();
+    }
 }
