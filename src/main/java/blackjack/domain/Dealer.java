@@ -23,4 +23,12 @@ public class Dealer {
     public Card getOneCard() {
         return cards.getValue().get(0);
     }
+
+    @Override
+    public String toString() {
+        return "Dealer{" +
+                "name='" + name + '\'' +
+                ", cards=" + cards +
+                '}';
+    }
 }

@@ -27,4 +27,12 @@ public class Player {
     public List<Card> getCards() {
         return cards.getValue();
     }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", cards=" + cards +
+                '}';
+    }
 }
