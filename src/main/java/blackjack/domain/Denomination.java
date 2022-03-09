@@ -25,6 +25,10 @@ public enum Denomination {
         this.name = name;
     }
 
+    public boolean isSame(Card card) {
+        return this == card.getDenomination();
+    }
+
     public int getScore() {
         return score;
     }

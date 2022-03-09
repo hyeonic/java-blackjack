@@ -1,7 +1,9 @@
 package blackjack.domain;
 
+import static java.util.stream.Collectors.*;
+
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -9,36 +11,33 @@ public class Card {
 
     public static final Set<Card> VALUES;
 
+    private final Denomination denomination;
+    private final Suit suit;
+
     static {
-        Set<Card> cards = new HashSet<>();
-        for (Denomination denomination : Denomination.values()) {
-            createCard(cards, denomination);
-        }
+        Set<Card> cards = Arrays.stream(Denomination.values())
+                .flatMap(denomination -> createCards(denomination).stream())
+                .collect(toSet());
 
         VALUES = Collections.unmodifiableSet(cards);
     }
 
-    private final Denomination denomination;
-    private final Suit suit;
+    private static Set<Card> createCards(Denomination denomination) {
+        return Arrays.stream(Suit.values())
+                .map(suit -> new Card(denomination, suit))
+                .collect(toSet());
+    }
 
     private Card(Denomination denomination, Suit suit) {
         this.denomination = denomination;
         this.suit = suit;
     }
 
-    private static void createCard(Set<Card> cards, Denomination denomination) {
-        for (Suit suit : Suit.values()) {
-            Card card = new Card(denomination, suit);
-            cards.add(card);
-        }
-    }
-
     public static Card of(Denomination denomination, Suit suit) {
-        Card targetCard = new Card(denomination, suit);
-
         return VALUES.stream()
-                .filter(card -> card.equals(targetCard))
-                .findFirst()
+                .filter(denomination::isSame)
+                .filter(suit::isSame)
+                .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카드입니다."));
     }
 

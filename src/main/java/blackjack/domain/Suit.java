@@ -14,6 +14,10 @@ public enum Suit {
         this.name = name;
     }
 
+    public boolean isSame(Card card) {
+        return this == card.getSuit();
+    }
+
     public String getName() {
         return name;
     }
