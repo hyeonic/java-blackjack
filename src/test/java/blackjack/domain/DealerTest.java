@@ -1,5 +1,6 @@
 package blackjack.domain;
 
+import static blackjack.domain.CardsTestDataGenerator.generateCards;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -12,7 +13,7 @@ public class DealerTest {
     @DisplayName("카드 리스트가 주어지면 정상적으로 생성된다.")
     @Test
     void 딜러_생성_정상() {
-        List<Card> cards = List.of(Card.of(Denomination.ACE, Suit.CLOVER), Card.of(Denomination.KING, Suit.DIAMOND));
+        List<Card> cards = generateCards();
 
         assertDoesNotThrow(() -> new Dealer(cards));
     }
@@ -23,13 +24,13 @@ public class DealerTest {
         List<Card> cards = List.of(Card.of(Denomination.ACE, Suit.CLOVER), Card.of(Denomination.KING, Suit.DIAMOND));
         Dealer dealer = new Dealer(cards);
 
-        assertThat(dealer.getTotalScore()).isEqualTo(11);
+        assertThat(dealer.getTotalScore()).isEqualTo(21);
     }
 
     @DisplayName("딜러의 점수가 16점 이하인 경우 카드를 받을 수 있다.")
     @Test
     void 카드_발급_유무_확인() {
-        List<Card> cards = List.of(Card.of(Denomination.ACE, Suit.CLOVER), Card.of(Denomination.KING, Suit.DIAMOND));
+        List<Card> cards = List.of(Card.of(Denomination.TWO, Suit.CLOVER), Card.of(Denomination.KING, Suit.DIAMOND));
         Dealer dealer = new Dealer(cards);
 
         assertThat(dealer.isDrawable()).isTrue();

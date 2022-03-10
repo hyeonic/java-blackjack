@@ -12,6 +12,10 @@ public class OutputView {
     private OutputView() {
     }
 
+    public static void printNewLine() {
+        System.out.println();
+    }
+
     public static void printStartInfo(Dealer dealer, List<Player> players) {
         String names = players.stream()
                 .map(Player::getName)
@@ -19,9 +23,8 @@ public class OutputView {
         System.out.println("\n딜러와 " + names + "에게 2장씩 나누었습니다.");
 
         System.out.println("딜러: " + cardInfo(dealer.getCards().get(0)));
-        for (Player player : players) {
-            printPlayerCardInfo(player);
-        }
+        players.forEach(OutputView::printPlayerCardInfo);
+        System.out.println();
     }
 
     public static void printPlayerCardInfo(Player player) {
@@ -37,15 +40,12 @@ public class OutputView {
     }
 
     public static void printDealerDrawableInfo() {
-        System.out.println("\n딜러는 16이하라 한장의 카드를 더 받았습니다.");
+        System.out.println("딜러는 16이하라 한장의 카드를 더 받았습니다.");
     }
 
     public static void printResultInfo(Dealer dealer, List<Player> players) {
-        System.out.println();
         createDealerResultInfo(dealer);
-        for (Player player : players) {
-            createPlayerResultInfo(player);
-        }
+        players.forEach(OutputView::createPlayerResultInfo);
     }
 
     private static void createPlayerResultInfo(Player player) {
@@ -61,8 +61,7 @@ public class OutputView {
                 .map(card -> cardInfo(card))
                 .collect(joining(", "));
 
-        System.out.println("딜러: " + cardsInfo + " - 결과: " + dealer.getTotalScore());
+        System.out.println("\n딜러: " + cardsInfo + " - 결과: " + dealer.getTotalScore());
     }
-
 }
 

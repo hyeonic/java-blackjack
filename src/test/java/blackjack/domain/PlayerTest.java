@@ -1,11 +1,16 @@
 package blackjack.domain;
 
+import static blackjack.domain.CardsTestDataGenerator.generateCards;
+import static blackjack.domain.CardsTestDataGenerator.generateTotalScoreGraterThan21Cards;
+import static blackjack.domain.CardsTestDataGenerator.generateTotalScoreNotMoreThan21Cards;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class PlayerTest {
 
@@ -19,30 +24,20 @@ public class PlayerTest {
     }
 
     @DisplayName("플레이어가 가진 카드의 총점을 구한다.")
-    @Test
-    void 플레이어_카드_총점_11() {
+    @ParameterizedTest
+    @MethodSource("blackjack.domain.CardsTestDataGenerator#cardsAndTotalScoreMethodSource")
+    void 플레이어_카드_총점_Cards(Cards cards, int totalScore) {
         String name = "mat";
-        List<Card> cards = List.of(Card.of(Denomination.ACE, Suit.CLOVER), Card.of(Denomination.KING, Suit.DIAMOND));
-        Player player = new Player(name, cards);
+        Player player = new Player(name, cards.getValue());
 
-        assertThat(player.getTotalScore()).isEqualTo(11);
-    }
-
-    @DisplayName("플레이어가 가진 카드의 총점을 구한다.")
-    @Test
-    void 플레이어_카드_총점_20() {
-        String name = "sudal";
-        List<Card> cards = List.of(Card.of(Denomination.JACK, Suit.CLOVER), Card.of(Denomination.KING, Suit.DIAMOND));
-        Player player = new Player(name, cards);
-
-        assertThat(player.getTotalScore()).isEqualTo(20);
+        assertThat(player.getTotalScore()).isEqualTo(totalScore);
     }
 
     @DisplayName("플레이어의 총 점수가 21점 이하인 경우 hit가 가능하다.")
     @Test
     void 플레이어_게임_지속_가능() {
         String name = "mat";
-        List<Card> cards = List.of(Card.of(Denomination.ACE, Suit.CLOVER), Card.of(Denomination.KING, Suit.DIAMOND));
+        List<Card> cards = generateTotalScoreNotMoreThan21Cards();
         Player player = new Player(name, cards);
 
         assertThat(player.isPlaying()).isTrue();
@@ -52,8 +47,7 @@ public class PlayerTest {
     @Test
     void 플레이어_게임_지속_불가능() {
         String name = "mat";
-        List<Card> cards = List.of(Card.of(Denomination.JACK, Suit.CLOVER), Card.of(Denomination.KING, Suit.DIAMOND),
-                Card.of(Denomination.KING, Suit.HEART));
+        List<Card> cards = generateTotalScoreGraterThan21Cards();
         Player player = new Player(name, cards);
 
         assertThat(player.isPlaying()).isFalse();
@@ -62,10 +56,7 @@ public class PlayerTest {
     @DisplayName("카드를 받아서 합칠 수 있다.")
     @Test
     void 카드_합침() {
-        String name = "mat";
-        List<Card> cards = List.of(Card.of(Denomination.JACK, Suit.CLOVER), Card.of(Denomination.KING, Suit.DIAMOND),
-                Card.of(Denomination.KING, Suit.HEART));
-        Player player = new Player(name, cards);
+        Player player = new Player("mat", generateCards());
         Card card = Card.of(Denomination.FIVE, Suit.SPADE);
 
         player.combine(card);

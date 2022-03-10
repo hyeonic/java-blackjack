@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class CardsTest {
 
@@ -16,17 +18,6 @@ public class CardsTest {
                 Card.of(Denomination.ACE, Suit.DIAMOND));
 
         assertDoesNotThrow(() -> new Cards(cardValues));
-    }
-
-    @DisplayName("카드의 총점을 계산한다.")
-    @Test
-    void 카드_총점_계산() {
-        List<Card> cardValues = List.of(Card.of(Denomination.JACK, Suit.CLOVER),
-                Card.of(Denomination.ACE, Suit.DIAMOND));
-
-        Cards cards = new Cards(cardValues);
-
-        assertThat(cards.calculateTotalScore()).isEqualTo(11);
     }
 
     @DisplayName("카드 List에 카드를 추가한다.")
@@ -40,5 +31,12 @@ public class CardsTest {
         cards.combine(Card.of(Denomination.KING, Suit.DIAMOND));
 
         assertThat(cards.getValue().size()).isEqualTo(3);
+    }
+
+    @DisplayName("Cards가 주어지면 점수를 계산하면 반환한다.")
+    @ParameterizedTest
+    @MethodSource("blackjack.domain.CardsTestDataGenerator#cardsAndTotalScoreMethodSource")
+    void 카드_점수_계산(Cards cards, int totalScore) {
+        assertThat(cards.calculateTotalScore()).isEqualTo(totalScore);
     }
 }
