@@ -1,6 +1,9 @@
 package blackjack.domain;
 
 import static blackjack.domain.CardsTestDataGenerator.generateCards;
+import static blackjack.domain.CardsTestDataGenerator.generateTotalScoreNotMoreThan16Cards;
+import static blackjack.domain.Denomination.*;
+import static blackjack.domain.Suit.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -21,7 +24,7 @@ public class DealerTest {
     @DisplayName("딜러 가진 카드의 총점을 구한다.")
     @Test
     void 딜러_카드_총점_11() {
-        List<Card> cards = List.of(Card.of(Denomination.ACE, Suit.CLOVER), Card.of(Denomination.KING, Suit.DIAMOND));
+        List<Card> cards = List.of(Card.of(ACE, CLOVER), Card.of(KING, DIAMOND));
         Dealer dealer = new Dealer(cards);
 
         assertThat(dealer.getTotalScore()).isEqualTo(21);
@@ -30,8 +33,7 @@ public class DealerTest {
     @DisplayName("딜러의 점수가 16점 이하인 경우 카드를 받을 수 있다.")
     @Test
     void 카드_발급_유무_확인() {
-        List<Card> cards = List.of(Card.of(Denomination.TWO, Suit.CLOVER), Card.of(Denomination.KING, Suit.DIAMOND));
-        Dealer dealer = new Dealer(cards);
+        Dealer dealer = new Dealer(generateTotalScoreNotMoreThan16Cards());
 
         assertThat(dealer.isDrawable()).isTrue();
     }
@@ -39,9 +41,8 @@ public class DealerTest {
     @DisplayName("카드를 받아서 합칠 수 있다.")
     @Test
     void 카드_합침() {
-        List<Card> cards = List.of(Card.of(Denomination.ACE, Suit.CLOVER), Card.of(Denomination.KING, Suit.DIAMOND));
-        Dealer dealer = new Dealer(cards);
-        Card card = Card.of(Denomination.FIVE, Suit.SPADE);
+        Dealer dealer = new Dealer(generateCards());
+        Card card = Card.of(FIVE, SPADE);
 
         dealer.combine(card);
 

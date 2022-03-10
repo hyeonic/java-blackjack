@@ -30,6 +30,10 @@ public class CardsTestDataGenerator {
     }
 
     public static List<Card> generateTotalScoreNotMoreThan21Cards() {
-        return List.of(Card.of(JACK, Suit.CLOVER), Card.of(QUEEN, Suit.CLOVER), Card.of(KING, Suit.DIAMOND));
+        return List.of(Card.of(JACK, Suit.CLOVER), Card.of(QUEEN, Suit.CLOVER));
+    }
+
+    public static List<Card> generateTotalScoreNotMoreThan16Cards() {
+        return List.of(Card.of(JACK, Suit.CLOVER), Card.of(TWO, Suit.CLOVER));
     }
 }

@@ -61,6 +61,6 @@ public class PlayerTest {
 
         player.combine(card);
 
-        assertThat(player.getCards().size()).isEqualTo(4);
+        assertThat(player.getCards().size()).isEqualTo(3);
     }
 }
